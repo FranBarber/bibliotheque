@@ -224,6 +224,7 @@
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+    // ⚠️ À ADAPTER : mets ici ton URL + ta clé ANON Supabase (pas la service key)
     const SUPABASE_URL = "https://jjiywxidulgiythucivk.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqaXl3eGlkdWxnaXl0aHVjaXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MzkwNjAsImV4cCI6MjA3OTIxNTA2MH0.N-ion8iRnXyyqPJTJ5Y2hSC1NF8IEM0HaAml6W3O-nk";
 
@@ -260,6 +261,14 @@
     let currentUser = null;
     let codeReader = null;
     let scanning = false;
+
+    // --- Nettoyage de l'ISBN (codes-barres scannés parfois bizarres) ---
+    function cleanIsbn(str) {
+      if (!str) return "";
+      // On ne garde que les chiffres et éventuellement X/x (pour certains ISBN-10)
+      const cleaned = str.replace(/[^0-9Xx]/g, "");
+      return cleaned;
+    }
 
     // --- Affichage auth / appli ---
     async function checkSession() {
@@ -333,22 +342,24 @@
       showAuth();
     });
 
-    // --- Récupération infos livre depuis OpenLibrary (via proxy pour éviter CORS) ---
+    // --- Récupération infos livre depuis OpenLibrary (ISBN nettoyé) ---
     document.getElementById("btn-fetch").addEventListener("click", async () => {
-      const isbn = isbnInput.value.trim();
+      let isbn = isbnInput.value;
       bookMsg.textContent = "";
       bookMsg.className = "msg";
+
+      isbn = cleanIsbn(isbn);
+      isbnInput.value = isbn; // on met la version propre dans le champ
+
       if (!isbn) {
-        bookMsg.textContent = "ISBN vide.";
+        bookMsg.textContent = "ISBN vide ou invalide.";
         bookMsg.className = "msg err";
         return;
       }
 
       try {
-        const targetUrl = `https://openlibrary.org/isbn/${isbn}.json`;
-        const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
-
-        const res = await fetch(proxyUrl);
+        const url = `https://openlibrary.org/isbn/${isbn}.json`;
+        const res = await fetch(url);
         if (!res.ok) {
           bookMsg.textContent = "Livre non trouvé dans OpenLibrary (code " + res.status + ").";
           bookMsg.className = "msg err";
@@ -382,14 +393,11 @@
           }
         }
 
-        // Auteur (appel supplémentaire, via proxy aussi)
+        // Auteur
         authorInput.value = "";
         if (Array.isArray(data.authors) && data.authors.length > 0 && data.authors[0].key) {
           try {
-            const authUrl = `https://openlibrary.org${data.authors[0].key}.json`;
-            const aRes = await fetch(
-              "https://api.allorigins.win/raw?url=" + encodeURIComponent(authUrl)
-            );
+            const aRes = await fetch(`https://openlibrary.org${data.authors[0].key}.json`);
             if (aRes.ok) {
               const aData = await aRes.json();
               authorInput.value = aData.name || "";
@@ -419,7 +427,10 @@
         return;
       }
 
-      const isbn = isbnInput.value.trim();
+      const isbnRaw = isbnInput.value.trim();
+      const isbn = cleanIsbn(isbnRaw);
+      isbnInput.value = isbn;
+
       const title = titleInput.value.trim() || "Titre inconnu";
       const author = authorInput.value.trim() || "Auteur inconnu";
       const publisher = publisherInput.value.trim() || "Éditeur inconnu";
@@ -683,7 +694,8 @@
           (result, err) => {
             if (result) {
               const text = result.getText();
-              isbnInput.value = text.trim();
+              const cleaned = cleanIsbn(text);
+              isbnInput.value = cleaned;
               stopScanning();
               document.getElementById("btn-fetch").click();
             }
