@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Ma Bibliothèque</title>
+  <title>Bibliothèque familiale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -85,8 +85,8 @@
     }
   </style>
 
-  <!-- Librairie pour scanner les codes-barres / QR avec la caméra -->
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <!-- Librairie ZXing pour lire les codes-barres / QR -->
+  <script src="https://unpkg.com/@zxing/library@latest"></script>
 </head>
 <body>
   <header>
@@ -133,8 +133,10 @@
 
       <!-- Zone d’aperçu du scan (cachée au début) -->
       <div id="scan-container" style="display:none; margin-top:1rem;">
-        <div id="qr-reader" style="width: 300px; max-width:100%;"></div>
-        <button class="secondary" id="btn-stop-scan">✖️ Arrêter le scan</button>
+        <video id="video-preview" style="width:300px; max-width:100%; border:1px solid #ccc; border-radius:8px;" muted playsinline></video>
+        <div>
+          <button class="secondary" id="btn-stop-scan">✖️ Arrêter le scan</button>
+        </div>
       </div>
 
       <div class="row">
@@ -220,10 +222,8 @@
   </main>
 
   <script type="module">
-
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    // ⚠️ À ADAPTER : mets ici ton URL + ta clé ANON Supabase (pas la service key)
     const SUPABASE_URL = "https://jjiywxidulgiythucivk.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqaXl3eGlkdWxnaXl0aHVjaXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MzkwNjAsImV4cCI6MjA3OTIxNTA2MH0.N-ion8iRnXyyqPJTJ5Y2hSC1NF8IEM0HaAml6W3O-nk";
 
@@ -253,12 +253,13 @@
     const familyTableBody = document.querySelector("#family-table tbody");
 
     const scanContainer = document.getElementById("scan-container");
+    const videoPreview = document.getElementById("video-preview");
     const btnScan = document.getElementById("btn-scan");
     const btnStopScan = document.getElementById("btn-stop-scan");
 
-    let html5QrCode = null;
-    let scanning = false;
     let currentUser = null;
+    let codeReader = null;
+    let scanning = false;
 
     // --- Affichage auth / appli ---
     async function checkSession() {
@@ -332,85 +333,80 @@
       showAuth();
     });
 
-    // --- Récupération infos livre depuis OpenLibrary ---
+    // --- Récupération infos livre depuis OpenLibrary (via proxy pour éviter CORS) ---
     document.getElementById("btn-fetch").addEventListener("click", async () => {
-  const isbn = isbnInput.value.trim();
-  bookMsg.textContent = "";
-  bookMsg.className = "msg";
-  if (!isbn) {
-    bookMsg.textContent = "ISBN vide.";
-    bookMsg.className = "msg err";
-    return;
-  }
-
-  try {
-    // URL OpenLibrary
-    const targetUrl = `https://openlibrary.org/isbn/${isbn}.json`;
-
-    // On passe par un petit proxy CORS pour éviter les blocages navigateur
-    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
-
-    const res = await fetch(proxyUrl);
-    if (!res.ok) {
-      bookMsg.textContent = "Livre non trouvé dans OpenLibrary (code " + res.status + ").";
-      bookMsg.className = "msg err";
-      return;
-    }
-
-    const data = await res.json();
-
-    // ======= On garde le reste comme avant =======
-    titleInput.value = data.title || "";
-
-    // Année de sortie
-    let yearPublished = "";
-    if (data.publish_date) {
-      const parts = data.publish_date.split(" ");
-      for (const part of parts) {
-        if (/^\d{4}$/.test(part)) {
-          yearPublished = part;
-          break;
-        }
+      const isbn = isbnInput.value.trim();
+      bookMsg.textContent = "";
+      bookMsg.className = "msg";
+      if (!isbn) {
+        bookMsg.textContent = "ISBN vide.";
+        bookMsg.className = "msg err";
+        return;
       }
-    }
-    yearPublishedInput.value = yearPublished;
 
-    // Éditeur
-    if (Array.isArray(data.publishers) && data.publishers.length > 0) {
-      if (typeof data.publishers[0] === "string") {
-        publisherInput.value = data.publishers[0];
-      } else if (typeof data.publishers[0] === "object") {
-        publisherInput.value = data.publishers[0].name || "";
-      }
-    }
-
-    // Auteur (appel supplémentaire)
-    authorInput.value = "";
-    if (Array.isArray(data.authors) && data.authors.length > 0 && data.authors[0].key) {
       try {
-        const aRes = await fetch(
-          "https://api.allorigins.win/raw?url=" +
-          encodeURIComponent(`https://openlibrary.org${data.authors[0].key}.json`)
-        );
-        if (aRes.ok) {
-          const aData = await aRes.json();
-          authorInput.value = aData.name || "";
+        const targetUrl = `https://openlibrary.org/isbn/${isbn}.json`;
+        const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
+
+        const res = await fetch(proxyUrl);
+        if (!res.ok) {
+          bookMsg.textContent = "Livre non trouvé dans OpenLibrary (code " + res.status + ").";
+          bookMsg.className = "msg err";
+          return;
         }
+
+        const data = await res.json();
+
+        // Titre
+        titleInput.value = data.title || "";
+
+        // Année de sortie
+        let yearPublished = "";
+        if (data.publish_date) {
+          const parts = data.publish_date.split(" ");
+          for (const part of parts) {
+            if (/^\d{4}$/.test(part)) {
+              yearPublished = part;
+              break;
+            }
+          }
+        }
+        yearPublishedInput.value = yearPublished;
+
+        // Éditeur
+        if (Array.isArray(data.publishers) && data.publishers.length > 0) {
+          if (typeof data.publishers[0] === "string") {
+            publisherInput.value = data.publishers[0];
+          } else if (typeof data.publishers[0] === "object") {
+            publisherInput.value = data.publishers[0].name || "";
+          }
+        }
+
+        // Auteur (appel supplémentaire, via proxy aussi)
+        authorInput.value = "";
+        if (Array.isArray(data.authors) && data.authors.length > 0 && data.authors[0].key) {
+          try {
+            const authUrl = `https://openlibrary.org${data.authors[0].key}.json`;
+            const aRes = await fetch(
+              "https://api.allorigins.win/raw?url=" + encodeURIComponent(authUrl)
+            );
+            if (aRes.ok) {
+              const aData = await aRes.json();
+              authorInput.value = aData.name || "";
+            }
+          } catch (e) {
+            console.error("Erreur auteur OpenLibrary", e);
+          }
+        }
+
+        bookMsg.textContent = "Infos récupérées, tu peux corriger si besoin.";
+        bookMsg.className = "msg ok";
       } catch (e) {
-        // on ignore, ce n'est pas bloquant
-        console.error("Erreur auteur OpenLibrary", e);
+        console.error("Erreur OpenLibrary:", e);
+        bookMsg.textContent = "Erreur lors de l'appel OpenLibrary : " + e;
+        bookMsg.className = "msg err";
       }
-    }
-
-    bookMsg.textContent = "Infos récupérées, tu peux corriger si besoin.";
-    bookMsg.className = "msg ok";
-
-  } catch (e) {
-    console.error("Erreur OpenLibrary:", e);
-    bookMsg.textContent = "Erreur lors de l'appel OpenLibrary : " + e;
-    bookMsg.className = "msg err";
-  }
-});
+    });
 
     // --- Enregistrer un livre ---
     document.getElementById("btn-save").addEventListener("click", async () => {
@@ -445,7 +441,6 @@
         if (!isNaN(parsed)) rating = parsed;
       }
 
-      // Vérifie si un livre avec cet ISBN existe déjà pour cet utilisateur
       const { data: existing, error: selError } = await supabase
         .from("books")
         .select("*")
@@ -460,7 +455,6 @@
       }
 
       if (existing) {
-        // update
         const { error: updError } = await supabase
           .from("books")
           .update({
@@ -483,7 +477,6 @@
         saveMsg.textContent = "Livre mis à jour.";
         saveMsg.className = "msg ok";
       } else {
-        // insert
         const { error: insError } = await supabase
           .from("books")
           .insert({
@@ -658,47 +651,48 @@
 
     document.getElementById("btn-family-top").addEventListener("click", loadFamilyTopBooks);
 
-    // --- Scan code-barres avec la caméra ---
+    // --- Scan code-barres avec ZXing ---
     btnScan.addEventListener("click", async () => {
       if (scanning) return;
 
-      if (!window.Html5Qrcode) {
-        bookMsg.textContent = "Scan non disponible (librairie non chargée).";
+      if (!window.ZXing || !ZXing.BrowserMultiFormatReader) {
+        bookMsg.textContent = "Scan non disponible (librairie ZXing non chargée).";
         bookMsg.className = "msg err";
         return;
       }
 
-      scanContainer.style.display = "block";
-
-      if (!html5QrCode) {
-        html5QrCode = new Html5Qrcode("qr-reader");
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        bookMsg.textContent = "La caméra n'est pas supportée sur ce navigateur.";
+        bookMsg.className = "msg err";
+        return;
       }
 
-      const config = {
-        fps: 10,
-        qrbox: { width: 250, height: 100 }
-      };
+      if (!codeReader) {
+        codeReader = new ZXing.BrowserMultiFormatReader();
+      }
 
-      scanning = true;
+      scanContainer.style.display = "block";
       bookMsg.textContent = "Place le code-barres devant la caméra…";
       bookMsg.className = "msg";
+      scanning = true;
 
       try {
-        await html5QrCode.start(
-          { facingMode: "environment" },
-          config,
-          (decodedText, decodedResult) => {
-            isbnInput.value = decodedText.trim();
-            stopScanning();
-            document.getElementById("btn-fetch").click();
-          },
-          (errorMessage) => {
-            // on peut ignorer les erreurs de scan continu
+        await codeReader.decodeFromVideoDevice(
+          null,
+          "video-preview",
+          (result, err) => {
+            if (result) {
+              const text = result.getText();
+              isbnInput.value = text.trim();
+              stopScanning();
+              document.getElementById("btn-fetch").click();
+            }
+            // On ignore les erreurs `err` répétées
           }
         );
-      } catch (err) {
-        console.error(err);
-        bookMsg.textContent = "Impossible de démarrer la caméra : " + err;
+      } catch (e) {
+        console.error("Erreur démarrage caméra", e);
+        bookMsg.textContent = "Impossible de démarrer la caméra : " + e;
         bookMsg.className = "msg err";
         scanContainer.style.display = "none";
         scanning = false;
@@ -706,20 +700,12 @@
     });
 
     function stopScanning() {
-      if (html5QrCode && scanning) {
-        html5QrCode.stop().then(() => {
-          scanning = false;
-          scanContainer.style.display = "none";
-          bookMsg.textContent = "";
-        }).catch((err) => {
-          console.error("Erreur à l'arrêt du scan", err);
-          scanning = false;
-          scanContainer.style.display = "none";
-        });
-      } else {
-        scanContainer.style.display = "none";
-        scanning = false;
+      if (codeReader && scanning) {
+        codeReader.reset();
       }
+      scanning = false;
+      scanContainer.style.display = "none";
+      bookMsg.textContent = "";
     }
 
     btnStopScan.addEventListener("click", () => {
