@@ -1,643 +1,728 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ma Bibliothèque</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f5f5;
-    }
-    header {
-      background: #1f2933;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    main {
-      max-width: 900px;
-      margin: 1rem auto 3rem;
-      background: white;
-      padding: 1rem 1.5rem 2rem;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    h1 {
-      margin: 0;
-    }
-    h2 {
-      margin-top: 1.5rem;
-    }
-    h3 {
-      margin-top: 1rem;
-    }
-    .row { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .col { flex: 1 1 250px; }
-    label { font-size: 0.9rem; font-weight: 500; display: block; margin-bottom: 0.2rem; }
-    input, textarea, select {
-      width: 100%;
-      padding: 0.4rem 0.6rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      font-size: 0.9rem;
-    }
-    textarea { resize: vertical; min-height: 60px; }
-    button {
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.9rem;
-      margin-top: 0.3rem;
-    }
-    button.primary { background: #2563eb; color: white; }
-    button.secondary { background: #e5e7eb; }
-    button.danger { background: #ef4444; color: white; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
-    }
-    th, td {
-      padding: 0.4rem 0.5rem;
-      border-bottom: 1px solid #e5e7eb;
-      vertical-align: top;
-    }
-    th { text-align: left; background: #f9fafb; }
-    .msg { margin-top: 0.3rem; font-size: 0.85rem; }
-    .msg.ok { color: #16a34a; }
-    .msg.err { color: #b91c1c; }
-    .badge-user {
-      background: #4b5563;
-      padding: 0.2rem 0.5rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      display: inline-block;
-      margin-top: 0.3rem;
-    }
-    #user-info {
-      margin-top: 0.3rem;
-      font-size: 0.85rem;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <title>Bibliothèque familiale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+    }
+    header {
+      background: #1f2933;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      max-width: 900px;
+      margin: 1rem auto 3rem;
+      background: white;
+      padding: 1rem 1.5rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    h1 { margin: 0; }
+    h2 { margin-top: 1.5rem; }
+    h3 { margin-top: 1rem; }
+    .row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .col { flex: 1 1 250px; }
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 0.9rem;
+    }
+    textarea { resize: vertical; min-height: 60px; }
+    button {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+    button.primary { background: #2563eb; color: white; }
+    button.secondary { background: #e5e7eb; }
+    button.danger { background: #ef4444; color: white; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+    th, td {
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    th { text-align: left; background: #f9fafb; }
+    .msg { margin-top: 0.3rem; font-size: 0.85rem; }
+    .msg.ok { color: #16a34a; }
+    .msg.err { color: #b91c1c; }
+    .badge-user {
+      background: #4b5563;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      display: inline-block;
+      margin-top: 0.3rem;
+    }
+    #user-info {
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+    }
+  </style>
+
+  <!-- Librairie pour scanner les codes-barres / QR avec la caméra -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
-  <header>
-    <h1>📚 Bibliothèque familiale</h1>
-    <div id="user-info"></div>
-  </header>
- 
-  <main>
-    <!-- Auth -->
-    <section id="auth-section">
-      <h2>Connexion / Inscription</h2>
-      <div class="row">
-        <div class="col">
-          <label>Email</label>
-          <input type="email" id="auth-email" placeholder="vous@example.com" />
-        </div>
-        <div class="col">
-          <label>Mot de passe</label>
-          <input type="password" id="auth-password" placeholder="••••••••" />
-        </div>
-      </div>
-      <button class="primary" id="btn-login">Se connecter</button>
-      <button class="secondary" id="btn-signup">Créer un compte</button>
-      <div class="msg" id="auth-msg"></div>
-    </section>
- 
-    <section id="app-section" style="display:none;">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2>Ajouter un livre</h2>
-        <button class="danger" id="btn-logout">Se déconnecter</button>
-      </div>
- 
-      <div class="row">
-        <div class="col">
-          <label>ISBN (scanner ou taper)</label>
-          <input type="text" id="isbn" placeholder="9782070368228" />
-          <button class="secondary" id="btn-fetch">🔎 Récupérer infos du livre</button>
-          <div class="msg" id="book-msg"></div>
-        </div>
-      </div>
- 
-      <div class="row">
-        <div class="col">
-          <label>Titre</label>
-          <input type="text" id="title" />
-        </div>
-        <div class="col">
-          <label>Auteur</label>
-          <input type="text" id="author" />
-        </div>
-      </div>
- 
-      <div class="row">
-        <div class="col">
-          <label>Éditeur</label>
-          <input type="text" id="publisher" />
-        </div>
-        <div class="col">
-          <label>Année de sortie</label>
-          <input type="text" id="year-published" placeholder="ex: 2005" />
-        </div>
-      </div>
- 
-      <h3>Informations de lecture</h3>
-      <div class="row">
-        <div class="col">
-          <label>Année de lecture</label>
-          <input type="text" id="year-read" placeholder="ex: 2024" />
-        </div>
-        <div class="col">
-          <label>Note /20</label>
-          <input type="text" id="rating" placeholder="ex: 15.5" />
-        </div>
-        <div class="col">
-          <label>Statut</label>
-          <select id="status">
-            <option value="à lire">À lire</option>
-            <option value="en cours">En cours</option>
-            <option value="lu" selected>Lu</option>
-          </select>
-        </div>
-      </div>
-      <div>
-        <label>Commentaires</label>
-        <textarea id="comment" placeholder="Ton avis, ce que tu as aimé / pas aimé…"></textarea>
-      </div>
- 
-      <button class="primary" id="btn-save">💾 Enregistrer le livre</button>
-      <div class="msg" id="save-msg"></div>
- 
-      <h2>Mes livres</h2>
-      <button class="secondary" id="btn-refresh">🔄 Rafraîchir la liste</button>
-      <button class="secondary" id="btn-export">⬇️ Exporter en CSV</button>
-      <table id="books-table">
-        <thead>
-          <tr>
-            <th>Titre</th>
-            <th>Auteur</th>
-            <th>Infos</th>
-            <th>Statut / lecture</th>
-            <th>Note</th>
-            <th>Commentaires</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
- 
-      <h2>Top livres de la famille</h2>
-      <button class="secondary" id="btn-family-top">🏆 Voir le classement</button>
-      <table id="family-table">
-        <thead>
-          <tr>
-            <th>Titre</th>
-            <th>Auteur</th>
-            <th>Nombre de notes</th>
-            <th>Note moyenne</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
-  </main>
- 
-  <script type="module">
+  <header>
+    <h1>📚 Bibliothèque familiale</h1>
+    <div id="user-info"></div>
+  </header>
+
+  <main>
+    <!-- Auth -->
+    <section id="auth-section">
+      <h2>Connexion / Inscription</h2>
+      <div class="row">
+        <div class="col">
+          <label>Email</label>
+          <input type="email" id="auth-email" placeholder="vous@example.com" />
+        </div>
+        <div class="col">
+          <label>Mot de passe</label>
+          <input type="password" id="auth-password" placeholder="••••••••" />
+        </div>
+      </div>
+      <button class="primary" id="btn-login">Se connecter</button>
+      <button class="secondary" id="btn-signup">Créer un compte</button>
+      <div class="msg" id="auth-msg"></div>
+    </section>
+
+    <section id="app-section" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>Ajouter un livre</h2>
+        <button class="danger" id="btn-logout">Se déconnecter</button>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>ISBN (scanner ou taper)</label>
+          <input type="text" id="isbn" placeholder="9782070368228" />
+          <div style="margin-top:0.3rem;">
+            <button class="secondary" id="btn-fetch">🔎 Récupérer infos du livre</button>
+            <button class="secondary" id="btn-scan">📷 Scanner avec la caméra</button>
+          </div>
+          <div class="msg" id="book-msg"></div>
+        </div>
+      </div>
+
+      <!-- Zone d’aperçu du scan (cachée au début) -->
+      <div id="scan-container" style="display:none; margin-top:1rem;">
+        <div id="qr-reader" style="width: 300px; max-width:100%;"></div>
+        <button class="secondary" id="btn-stop-scan">✖️ Arrêter le scan</button>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Titre</label>
+          <input type="text" id="title" />
+        </div>
+        <div class="col">
+          <label>Auteur</label>
+          <input type="text" id="author" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Éditeur</label>
+          <input type="text" id="publisher" />
+        </div>
+        <div class="col">
+          <label>Année de sortie</label>
+          <input type="text" id="year-published" placeholder="ex: 2005" />
+        </div>
+      </div>
+
+      <h3>Informations de lecture</h3>
+      <div class="row">
+        <div class="col">
+          <label>Année de lecture</label>
+          <input type="text" id="year-read" placeholder="ex: 2024" />
+        </div>
+        <div class="col">
+          <label>Note /20</label>
+          <input type="text" id="rating" placeholder="ex: 15.5" />
+        </div>
+        <div class="col">
+          <label>Statut</label>
+          <select id="status">
+            <option value="à lire">À lire</option>
+            <option value="en cours">En cours</option>
+            <option value="lu" selected>Lu</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label>Commentaires</label>
+        <textarea id="comment" placeholder="Ton avis, ce que tu as aimé / pas aimé…"></textarea>
+      </div>
+
+      <button class="primary" id="btn-save">💾 Enregistrer le livre</button>
+      <div class="msg" id="save-msg"></div>
+
+      <h2>Mes livres</h2>
+      <button class="secondary" id="btn-refresh">🔄 Rafraîchir la liste</button>
+      <button class="secondary" id="btn-export">⬇️ Exporter en CSV</button>
+      <table id="books-table">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Infos</th>
+            <th>Statut / lecture</th>
+            <th>Note</th>
+            <th>Commentaires</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h2>Top livres de la famille</h2>
+      <button class="secondary" id="btn-family-top">🏆 Voir le classement</button>
+      <table id="family-table">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Nombre de notes</th>
+            <th>Note moyenne</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script type="module">
 
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-  
-    const SUPABASE_URL = "https://jjiywxidulgiythucivk.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqaXl3eGlkdWxnaXl0aHVjaXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MzkwNjAsImV4cCI6MjA3OTIxNTA2MH0.N-ion8iRnXyyqPJTJ5Y2hSC1NF8IEM0HaAml6W3O-nk";
- 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
- 
-    // --- Références DOM ---
-    const authSection = document.getElementById("auth-section");
-    const appSection = document.getElementById("app-section");
-    const userInfo = document.getElementById("user-info");
- 
-    const authEmail = document.getElementById("auth-email");
-    const authPassword = document.getElementById("auth-password");
-    const authMsg = document.getElementById("auth-msg");
- 
-    const isbnInput = document.getElementById("isbn");
-    const titleInput = document.getElementById("title");
-    const authorInput = document.getElementById("author");
-    const publisherInput = document.getElementById("publisher");
-    const yearPublishedInput = document.getElementById("year-published");
-    const yearReadInput = document.getElementById("year-read");
-    const ratingInput = document.getElementById("rating");
-    const statusInput = document.getElementById("status");
-    const commentInput = document.getElementById("comment");
-    const bookMsg = document.getElementById("book-msg");
-    const saveMsg = document.getElementById("save-msg");
-    const booksTableBody = document.querySelector("#books-table tbody");
-    const familyTableBody = document.querySelector("#family-table tbody");
- 
-    let currentUser = null;
- 
-    // --- Affichage auth / appli ---
-    async function checkSession() {
-      const { data } = await supabase.auth.getSession();
-      if (data.session && data.session.user) {
-        currentUser = data.session.user;
-        showApp();
-      } else {
-        showAuth();
-      }
-    }
- 
-    function showAuth() {
-      authSection.style.display = "block";
-      appSection.style.display = "none";
-      userInfo.innerHTML = "";
-    }
- 
-    function showApp() {
-      authSection.style.display = "none";
-      appSection.style.display = "block";
-      userInfo.innerHTML = `<span class="badge-user">${currentUser.email}</span>`;
-      loadBooks();
-    }
- 
-    // --- Auth ---
-    document.getElementById("btn-login").addEventListener("click", async () => {
-      authMsg.textContent = "";
-      authMsg.className = "msg";
-      const email = authEmail.value.trim();
-      const password = authPassword.value.trim();
-      if (!email || !password) {
-        authMsg.textContent = "Email et mot de passe obligatoires.";
-        authMsg.className = "msg err";
-        return;
-      }
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        authMsg.textContent = "Erreur de connexion : " + error.message;
-        authMsg.className = "msg err";
-      } else {
-        currentUser = data.user;
-        authMsg.textContent = "";
-        showApp();
-      }
-    });
- 
-    document.getElementById("btn-signup").addEventListener("click", async () => {
-      authMsg.textContent = "";
-      authMsg.className = "msg";
-      const email = authEmail.value.trim();
-      const password = authPassword.value.trim();
-      if (!email || !password) {
-        authMsg.textContent = "Email et mot de passe obligatoires.";
-        authMsg.className = "msg err";
-        return;
-      }
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) {
-        authMsg.textContent = "Erreur d'inscription : " + error.message;
-        authMsg.className = "msg err";
-      } else {
-        authMsg.textContent = "Compte créé, vérifie ton e-mail si nécessaire, puis connecte-toi.";
-        authMsg.className = "msg ok";
-      }
-    });
- 
-    document.getElementById("btn-logout").addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      currentUser = null;
-      showAuth();
-    });
- 
-    // --- Récupération infos livre depuis OpenLibrary ---
-    document.getElementById("btn-fetch").addEventListener("click", async () => {
-      const isbn = isbnInput.value.trim();
-      bookMsg.textContent = "";
-      bookMsg.className = "msg";
-      if (!isbn) {
-        bookMsg.textContent = "ISBN vide.";
-        bookMsg.className = "msg err";
-        return;
-      }
-      try {
-        const res = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
-        if (!res.ok) {
-          bookMsg.textContent = "Livre non trouvé dans OpenLibrary.";
-          bookMsg.className = "msg err";
-          return;
-        }
-        const data = await res.json();
-        titleInput.value = data.title || "";
- 
-        // Année de sortie
-        let yearPublished = "";
-        if (data.publish_date) {
-          const parts = data.publish_date.split(" ");
-          for (const part of parts) {
-            if (/^\d{4}$/.test(part)) {
-              yearPublished = part;
-              break;
-            }
-          }
-        }
-        yearPublishedInput.value = yearPublished;
- 
-        // Éditeur
-        if (Array.isArray(data.publishers) && data.publishers.length > 0) {
-          if (typeof data.publishers[0] === "string") {
-            publisherInput.value = data.publishers[0];
-          } else if (typeof data.publishers[0] === "object") {
-            publisherInput.value = data.publishers[0].name || "";
-          }
-        }
- 
-        // Auteur (appel supplémentaire)
-        authorInput.value = "";
-        if (Array.isArray(data.authors) && data.authors.length > 0 && data.authors[0].key) {
-          try {
-            const aRes = await fetch(`https://openlibrary.org${data.authors[0].key}.json`);
-            if (aRes.ok) {
-              const aData = await aRes.json();
-              authorInput.value = aData.name || "";
-            }
-          } catch (e) {
-            // on ignore
-          }
-        }
- 
-        bookMsg.textContent = "Infos récupérées, tu peux corriger si besoin.";
-        bookMsg.className = "msg ok";
-      } catch (e) {
-        bookMsg.textContent = "Erreur lors de l'appel OpenLibrary.";
-        bookMsg.className = "msg err";
-      }
-    });
- 
-    // --- Enregistrer un livre ---
-    document.getElementById("btn-save").addEventListener("click", async () => {
-      saveMsg.textContent = "";
-      saveMsg.className = "msg";
- 
-      if (!currentUser) {
-        saveMsg.textContent = "Tu dois être connecté.";
-        saveMsg.className = "msg err";
-        return;
-      }
- 
-      const isbn = isbnInput.value.trim();
-      const title = titleInput.value.trim() || "Titre inconnu";
-      const author = authorInput.value.trim() || "Auteur inconnu";
-      const publisher = publisherInput.value.trim() || "Éditeur inconnu";
-      const year_published = yearPublishedInput.value.trim() || "Année inconnue";
-      const year_read = yearReadInput.value.trim() || "Inconnue";
-      const ratingRaw = ratingInput.value.trim();
-      const status = statusInput.value || "lu";
-      const comment = commentInput.value.trim();
- 
-      if (!isbn) {
-        saveMsg.textContent = "ISBN obligatoire.";
-        saveMsg.className = "msg err";
-        return;
-      }
- 
-      let rating = null;
-      if (ratingRaw) {
-        const parsed = parseFloat(ratingRaw.replace(",", "."));
-        if (!isNaN(parsed)) rating = parsed;
-      }
- 
-      // Vérifie si un livre avec cet ISBN existe déjà pour cet utilisateur
-      const { data: existing, error: selError } = await supabase
-        .from("books")
-        .select("*")
-        .eq("user_id", currentUser.id)
-        .eq("isbn", isbn)
-        .maybeSingle();
- 
-      if (selError && selError.code !== "PGRST116") {
-        saveMsg.textContent = "Erreur de lecture : " + selError.message;
-        saveMsg.className = "msg err";
-        return;
-      }
- 
-      if (existing) {
-        // update
-        const { error: updError } = await supabase
-          .from("books")
-          .update({
-            title,
-            author,
-            publisher,
-            year_published,
-            year_read,
-            rating,
-            comment,
-            status
-          })
-          .eq("id", existing.id);
- 
-        if (updError) {
-          saveMsg.textContent = "Erreur de mise à jour : " + updError.message;
-          saveMsg.className = "msg err";
-          return;
-        }
-        saveMsg.textContent = "Livre mis à jour.";
-        saveMsg.className = "msg ok";
-      } else {
-        // insert
-        const { error: insError } = await supabase
-          .from("books")
-          .insert({
-            user_id: currentUser.id,
-            isbn,
-            title,
-            author,
-            publisher,
-            year_published,
-            year_read,
-            rating,
-            comment,
-            status
-          });
- 
-        if (insError) {
-          saveMsg.textContent = "Erreur d'enregistrement : " + insError.message;
-          saveMsg.className = "msg err";
-          return;
-        }
-        saveMsg.textContent = "Livre enregistré.";
-        saveMsg.className = "msg ok";
-      }
- 
-      await loadBooks();
-    });
- 
-    // --- Charger les livres de l'utilisateur ---
-    async function loadBooks() {
-      booksTableBody.innerHTML = "";
-      if (!currentUser) return;
-      const { data, error } = await supabase
-        .from("books")
-        .select("*")
-        .eq("user_id", currentUser.id)
-        .order("created_at", { ascending: false });
- 
-      if (error) {
-        console.error(error);
-        return;
-      }
-      for (const book of data) {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${book.title || ""}</td>
-          <td>${book.author || ""}</td>
-          <td>
-            <div>ISBN : ${book.isbn || ""}</div>
-            <div>Éditeur : ${book.publisher || ""}</div>
-            <div>Sortie : ${book.year_published || ""}</div>
-          </td>
-          <td>
-            <div>${book.status || ""}</div>
-            <div>Année : ${book.year_read || ""}</div>
-          </td>
-          <td>${book.rating ?? ""}</td>
-          <td>${(book.comment || "").replace(/\n/g, "<br>")}</td>
-        `;
-        booksTableBody.appendChild(tr);
-      }
-    }
- 
-    document.getElementById("btn-refresh").addEventListener("click", loadBooks);
- 
-    // --- Export CSV (livres de l'utilisateur) ---
-    document.getElementById("btn-export").addEventListener("click", async () => {
-      if (!currentUser) return;
- 
-      const { data, error } = await supabase
-        .from("books")
-        .select("*")
-        .eq("user_id", currentUser.id);
- 
-      if (error) {
-        alert("Erreur lors de l'export : " + error.message);
-        return;
-      }
- 
-      if (!data || data.length === 0) {
-        alert("Aucun livre à exporter.");
-        return;
-      }
- 
-      const headers = [
-        "isbn","title","author","publisher",
-        "year_published","year_read","status","rating","comment"
-      ];
- 
-      const rows = [headers.join(";")];
- 
-      for (const book of data) {
-        const row = [
-          book.isbn || "",
-          book.title || "",
-          book.author || "",
-          book.publisher || "",
-          book.year_published || "",
-          book.year_read || "",
-          book.status || "",
-          book.rating ?? "",
-          (book.comment || "").replace(/\r?\n/g, " ")
-        ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(";");
-        rows.push(row);
-      }
- 
-      const csvContent = rows.join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
- 
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "mes_livres.csv";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
- 
-    // --- Top livres de la famille ---
-    async function loadFamilyTopBooks() {
-      familyTableBody.innerHTML = "";
- 
-      // RLS côté Supabase doit autoriser SELECT pour tous les users authentifiés
-      const { data, error } = await supabase
-        .from("books")
-        .select("title, author, rating")
-        .not("rating", "is", null);
- 
-      if (error) {
-        console.error(error);
-        return;
-      }
- 
-      const map = new Map();
-      for (const b of data) {
-        const key = `${b.title || ""}|||${b.author || ""}`;
-        if (!map.has(key)) {
-          map.set(key, { title: b.title || "", author: b.author || "", sum: 0, count: 0 });
-        }
-        const item = map.get(key);
-        item.sum += Number(b.rating) || 0;
-        item.count += 1;
-      }
- 
-      const list = [];
-      for (const item of map.values()) {
-        list.push({
-          title: item.title,
-          author: item.author,
-          count: item.count,
-          avg: item.sum / item.count
-        });
-      }
- 
-      list.sort((a, b) => {
-        if (b.avg !== a.avg) return b.avg - a.avg;
-        return b.count - a.count;
-      });
- 
-      const top = list.slice(0, 20);
- 
-      for (const book of top) {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${book.title}</td>
-          <td>${book.author}</td>
-          <td>${book.count}</td>
-          <td>${book.avg.toFixed(2)}</td>
-        `;
-        familyTableBody.appendChild(tr);
-      }
-    }
- 
-    document.getElementById("btn-family-top").addEventListener("click", loadFamilyTopBooks);
- 
-    // --- Au chargement de la page ---
-    checkSession();
- 
-    // Sur changement de session (autre onglet)
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session && session.user) {
-        currentUser = session.user;
-        showApp();
-      } else {
-        currentUser = null;
-        showAuth();
-      }
-    });
-  </script>
+
+    // ⚠️ À ADAPTER : mets ici ton URL + ta clé ANON Supabase (pas la service key)
+    const SUPABASE_URL = "https://jjiywxidulgiythucivk.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqaXl3eGlkdWxnaXl0aHVjaXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MzkwNjAsImV4cCI6MjA3OTIxNTA2MH0.N-ion8iRnXyyqPJTJ5Y2hSC1NF8IEM0HaAml6W3O-nk";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // --- Références DOM ---
+    const authSection = document.getElementById("auth-section");
+    const appSection = document.getElementById("app-section");
+    const userInfo = document.getElementById("user-info");
+
+    const authEmail = document.getElementById("auth-email");
+    const authPassword = document.getElementById("auth-password");
+    const authMsg = document.getElementById("auth-msg");
+
+    const isbnInput = document.getElementById("isbn");
+    const titleInput = document.getElementById("title");
+    const authorInput = document.getElementById("author");
+    const publisherInput = document.getElementById("publisher");
+    const yearPublishedInput = document.getElementById("year-published");
+    const yearReadInput = document.getElementById("year-read");
+    const ratingInput = document.getElementById("rating");
+    const statusInput = document.getElementById("status");
+    const commentInput = document.getElementById("comment");
+    const bookMsg = document.getElementById("book-msg");
+    const saveMsg = document.getElementById("save-msg");
+    const booksTableBody = document.querySelector("#books-table tbody");
+    const familyTableBody = document.querySelector("#family-table tbody");
+
+    const scanContainer = document.getElementById("scan-container");
+    const btnScan = document.getElementById("btn-scan");
+    const btnStopScan = document.getElementById("btn-stop-scan");
+
+    let html5QrCode = null;
+    let scanning = false;
+    let currentUser = null;
+
+    // --- Affichage auth / appli ---
+    async function checkSession() {
+      const { data } = await supabase.auth.getSession();
+      if (data.session && data.session.user) {
+        currentUser = data.session.user;
+        showApp();
+      } else {
+        showAuth();
+      }
+    }
+
+    function showAuth() {
+      authSection.style.display = "block";
+      appSection.style.display = "none";
+      userInfo.innerHTML = "";
+    }
+
+    function showApp() {
+      authSection.style.display = "none";
+      appSection.style.display = "block";
+      userInfo.innerHTML = `<span class="badge-user">${currentUser.email}</span>`;
+      loadBooks();
+    }
+
+    // --- Auth ---
+    document.getElementById("btn-login").addEventListener("click", async () => {
+      authMsg.textContent = "";
+      authMsg.className = "msg";
+      const email = authEmail.value.trim();
+      const password = authPassword.value.trim();
+      if (!email || !password) {
+        authMsg.textContent = "Email et mot de passe obligatoires.";
+        authMsg.className = "msg err";
+        return;
+      }
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        authMsg.textContent = "Erreur de connexion : " + error.message;
+        authMsg.className = "msg err";
+      } else {
+        currentUser = data.user;
+        authMsg.textContent = "";
+        showApp();
+      }
+    });
+
+    document.getElementById("btn-signup").addEventListener("click", async () => {
+      authMsg.textContent = "";
+      authMsg.className = "msg";
+      const email = authEmail.value.trim();
+      const password = authPassword.value.trim();
+      if (!email || !password) {
+        authMsg.textContent = "Email et mot de passe obligatoires.";
+        authMsg.className = "msg err";
+        return;
+      }
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        authMsg.textContent = "Erreur d'inscription : " + error.message;
+        authMsg.className = "msg err";
+      } else {
+        authMsg.textContent = "Compte créé, vérifie ton e-mail si nécessaire, puis connecte-toi.";
+        authMsg.className = "msg ok";
+      }
+    });
+
+    document.getElementById("btn-logout").addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      currentUser = null;
+      showAuth();
+    });
+
+    // --- Récupération infos livre depuis OpenLibrary ---
+    document.getElementById("btn-fetch").addEventListener("click", async () => {
+      const isbn = isbnInput.value.trim();
+      bookMsg.textContent = "";
+      bookMsg.className = "msg";
+      if (!isbn) {
+        bookMsg.textContent = "ISBN vide.";
+        bookMsg.className = "msg err";
+        return;
+      }
+      try {
+        const res = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
+        if (!res.ok) {
+          bookMsg.textContent = "Livre non trouvé dans OpenLibrary.";
+          bookMsg.className = "msg err";
+          return;
+        }
+        const data = await res.json();
+        titleInput.value = data.title || "";
+
+        // Année de sortie
+        let yearPublished = "";
+        if (data.publish_date) {
+          const parts = data.publish_date.split(" ");
+          for (const part of parts) {
+            if (/^\d{4}$/.test(part)) {
+              yearPublished = part;
+              break;
+            }
+          }
+        }
+        yearPublishedInput.value = yearPublished;
+
+        // Éditeur
+        if (Array.isArray(data.publishers) && data.publishers.length > 0) {
+          if (typeof data.publishers[0] === "string") {
+            publisherInput.value = data.publishers[0];
+          } else if (typeof data.publishers[0] === "object") {
+            publisherInput.value = data.publishers[0].name || "";
+          }
+        }
+
+        // Auteur (appel supplémentaire)
+        authorInput.value = "";
+        if (Array.isArray(data.authors) && data.authors.length > 0 && data.authors[0].key) {
+          try {
+            const aRes = await fetch(`https://openlibrary.org${data.authors[0].key}.json`);
+            if (aRes.ok) {
+              const aData = await aRes.json();
+              authorInput.value = aData.name || "";
+            }
+          } catch (e) {
+            // ignore
+          }
+        }
+
+        bookMsg.textContent = "Infos récupérées, tu peux corriger si besoin.";
+        bookMsg.className = "msg ok";
+      } catch (e) {
+        bookMsg.textContent = "Erreur lors de l'appel OpenLibrary.";
+        bookMsg.className = "msg err";
+      }
+    });
+
+    // --- Enregistrer un livre ---
+    document.getElementById("btn-save").addEventListener("click", async () => {
+      saveMsg.textContent = "";
+      saveMsg.className = "msg";
+
+      if (!currentUser) {
+        saveMsg.textContent = "Tu dois être connecté.";
+        saveMsg.className = "msg err";
+        return;
+      }
+
+      const isbn = isbnInput.value.trim();
+      const title = titleInput.value.trim() || "Titre inconnu";
+      const author = authorInput.value.trim() || "Auteur inconnu";
+      const publisher = publisherInput.value.trim() || "Éditeur inconnu";
+      const year_published = yearPublishedInput.value.trim() || "Année inconnue";
+      const year_read = yearReadInput.value.trim() || "Inconnue";
+      const ratingRaw = ratingInput.value.trim();
+      const status = statusInput.value || "lu";
+      const comment = commentInput.value.trim();
+
+      if (!isbn) {
+        saveMsg.textContent = "ISBN obligatoire.";
+        saveMsg.className = "msg err";
+        return;
+      }
+
+      let rating = null;
+      if (ratingRaw) {
+        const parsed = parseFloat(ratingRaw.replace(",", "."));
+        if (!isNaN(parsed)) rating = parsed;
+      }
+
+      // Vérifie si un livre avec cet ISBN existe déjà pour cet utilisateur
+      const { data: existing, error: selError } = await supabase
+        .from("books")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .eq("isbn", isbn)
+        .maybeSingle();
+
+      if (selError && selError.code !== "PGRST116") {
+        saveMsg.textContent = "Erreur de lecture : " + selError.message;
+        saveMsg.className = "msg err";
+        return;
+      }
+
+      if (existing) {
+        // update
+        const { error: updError } = await supabase
+          .from("books")
+          .update({
+            title,
+            author,
+            publisher,
+            year_published,
+            year_read,
+            rating,
+            comment,
+            status
+          })
+          .eq("id", existing.id);
+
+        if (updError) {
+          saveMsg.textContent = "Erreur de mise à jour : " + updError.message;
+          saveMsg.className = "msg err";
+          return;
+        }
+        saveMsg.textContent = "Livre mis à jour.";
+        saveMsg.className = "msg ok";
+      } else {
+        // insert
+        const { error: insError } = await supabase
+          .from("books")
+          .insert({
+            user_id: currentUser.id,
+            isbn,
+            title,
+            author,
+            publisher,
+            year_published,
+            year_read,
+            rating,
+            comment,
+            status
+          });
+
+        if (insError) {
+          saveMsg.textContent = "Erreur d'enregistrement : " + insError.message;
+          saveMsg.className = "msg err";
+          return;
+        }
+        saveMsg.textContent = "Livre enregistré.";
+        saveMsg.className = "msg ok";
+      }
+
+      await loadBooks();
+    });
+
+    // --- Charger les livres de l'utilisateur ---
+    async function loadBooks() {
+      booksTableBody.innerHTML = "";
+      if (!currentUser) return;
+      const { data, error } = await supabase
+        .from("books")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+      for (const book of data) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${book.title || ""}</td>
+          <td>${book.author || ""}</td>
+          <td>
+            <div>ISBN : ${book.isbn || ""}</div>
+            <div>Éditeur : ${book.publisher || ""}</div>
+            <div>Sortie : ${book.year_published || ""}</div>
+          </td>
+          <td>
+            <div>${book.status || ""}</div>
+            <div>Année : ${book.year_read || ""}</div>
+          </td>
+          <td>${book.rating ?? ""}</td>
+          <td>${(book.comment || "").replace(/\n/g, "<br>")}</td>
+        `;
+        booksTableBody.appendChild(tr);
+      }
+    }
+
+    document.getElementById("btn-refresh").addEventListener("click", loadBooks);
+
+    // --- Export CSV (livres de l'utilisateur) ---
+    document.getElementById("btn-export").addEventListener("click", async () => {
+      if (!currentUser) return;
+
+      const { data, error } = await supabase
+        .from("books")
+        .select("*")
+        .eq("user_id", currentUser.id);
+
+      if (error) {
+        alert("Erreur lors de l'export : " + error.message);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        alert("Aucun livre à exporter.");
+        return;
+      }
+
+      const headers = [
+        "isbn","title","author","publisher",
+        "year_published","year_read","status","rating","comment"
+      ];
+
+      const rows = [headers.join(";")];
+
+      for (const book of data) {
+        const row = [
+          book.isbn || "",
+          book.title || "",
+          book.author || "",
+          book.publisher || "",
+          book.year_published || "",
+          book.year_read || "",
+          book.status || "",
+          book.rating ?? "",
+          (book.comment || "").replace(/\r?\n/g, " ")
+        ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(";");
+        rows.push(row);
+      }
+
+      const csvContent = rows.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "mes_livres.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    // --- Top livres de la famille ---
+    async function loadFamilyTopBooks() {
+      familyTableBody.innerHTML = "";
+
+      const { data, error } = await supabase
+        .from("books")
+        .select("title, author, rating")
+        .not("rating", "is", null);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      const map = new Map();
+      for (const b of data) {
+        const key = `${b.title || ""}|||${b.author || ""}`;
+        if (!map.has(key)) {
+          map.set(key, { title: b.title || "", author: b.author || "", sum: 0, count: 0 });
+        }
+        const item = map.get(key);
+        item.sum += Number(b.rating) || 0;
+        item.count += 1;
+      }
+
+      const list = [];
+      for (const item of map.values()) {
+        list.push({
+          title: item.title,
+          author: item.author,
+          count: item.count,
+          avg: item.sum / item.count
+        });
+      }
+
+      list.sort((a, b) => {
+        if (b.avg !== a.avg) return b.avg - a.avg;
+        return b.count - a.count;
+      });
+
+      const top = list.slice(0, 20);
+
+      for (const book of top) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${book.title}</td>
+          <td>${book.author}</td>
+          <td>${book.count}</td>
+          <td>${book.avg.toFixed(2)}</td>
+        `;
+        familyTableBody.appendChild(tr);
+      }
+    }
+
+    document.getElementById("btn-family-top").addEventListener("click", loadFamilyTopBooks);
+
+    // --- Scan code-barres avec la caméra ---
+    btnScan.addEventListener("click", async () => {
+      if (scanning) return;
+
+      if (!window.Html5Qrcode) {
+        bookMsg.textContent = "Scan non disponible (librairie non chargée).";
+        bookMsg.className = "msg err";
+        return;
+      }
+
+      scanContainer.style.display = "block";
+
+      if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode("qr-reader");
+      }
+
+      const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 100 }
+      };
+
+      scanning = true;
+      bookMsg.textContent = "Place le code-barres devant la caméra…";
+      bookMsg.className = "msg";
+
+      try {
+        await html5QrCode.start(
+          { facingMode: "environment" },
+          config,
+          (decodedText, decodedResult) => {
+            isbnInput.value = decodedText.trim();
+            stopScanning();
+            document.getElementById("btn-fetch").click();
+          },
+          (errorMessage) => {
+            // on peut ignorer les erreurs de scan continu
+          }
+        );
+      } catch (err) {
+        console.error(err);
+        bookMsg.textContent = "Impossible de démarrer la caméra : " + err;
+        bookMsg.className = "msg err";
+        scanContainer.style.display = "none";
+        scanning = false;
+      }
+    });
+
+    function stopScanning() {
+      if (html5QrCode && scanning) {
+        html5QrCode.stop().then(() => {
+          scanning = false;
+          scanContainer.style.display = "none";
+          bookMsg.textContent = "";
+        }).catch((err) => {
+          console.error("Erreur à l'arrêt du scan", err);
+          scanning = false;
+          scanContainer.style.display = "none";
+        });
+      } else {
+        scanContainer.style.display = "none";
+        scanning = false;
+      }
+    }
+
+    btnStopScan.addEventListener("click", () => {
+      stopScanning();
+    });
+
+    // --- Au chargement de la page ---
+    checkSession();
+
+    // Sur changement de session (autre onglet)
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (session && session.user) {
+        currentUser = session.user;
+        showApp();
+      } else {
+        currentUser = null;
+        showAuth();
+      }
+    });
+  </script>
 </body>
 </html>
