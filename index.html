@@ -209,11 +209,11 @@
   </main>
  
   <script type="module">
+
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
   
     const SUPABASE_URL = "https://jjiywxidulgiythucivk.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqaXl3eGlkdWxnaXl0aHVjaXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MzkwNjAsImV4cCI6MjA3OTIxNTA2MH0.N-ion8iRnXyyqPJTJ5Y2hSC1NF8IEM0HaAml6W3O-nk";
- 
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
  
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
  
