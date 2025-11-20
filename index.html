@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Bibliothèque familiale</title>
+  <title>Ma Bibliothèque</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -334,67 +334,83 @@
 
     // --- Récupération infos livre depuis OpenLibrary ---
     document.getElementById("btn-fetch").addEventListener("click", async () => {
-      const isbn = isbnInput.value.trim();
-      bookMsg.textContent = "";
-      bookMsg.className = "msg";
-      if (!isbn) {
-        bookMsg.textContent = "ISBN vide.";
-        bookMsg.className = "msg err";
-        return;
+  const isbn = isbnInput.value.trim();
+  bookMsg.textContent = "";
+  bookMsg.className = "msg";
+  if (!isbn) {
+    bookMsg.textContent = "ISBN vide.";
+    bookMsg.className = "msg err";
+    return;
+  }
+
+  try {
+    // URL OpenLibrary
+    const targetUrl = `https://openlibrary.org/isbn/${isbn}.json`;
+
+    // On passe par un petit proxy CORS pour éviter les blocages navigateur
+    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
+
+    const res = await fetch(proxyUrl);
+    if (!res.ok) {
+      bookMsg.textContent = "Livre non trouvé dans OpenLibrary (code " + res.status + ").";
+      bookMsg.className = "msg err";
+      return;
+    }
+
+    const data = await res.json();
+
+    // ======= On garde le reste comme avant =======
+    titleInput.value = data.title || "";
+
+    // Année de sortie
+    let yearPublished = "";
+    if (data.publish_date) {
+      const parts = data.publish_date.split(" ");
+      for (const part of parts) {
+        if (/^\d{4}$/.test(part)) {
+          yearPublished = part;
+          break;
+        }
       }
+    }
+    yearPublishedInput.value = yearPublished;
+
+    // Éditeur
+    if (Array.isArray(data.publishers) && data.publishers.length > 0) {
+      if (typeof data.publishers[0] === "string") {
+        publisherInput.value = data.publishers[0];
+      } else if (typeof data.publishers[0] === "object") {
+        publisherInput.value = data.publishers[0].name || "";
+      }
+    }
+
+    // Auteur (appel supplémentaire)
+    authorInput.value = "";
+    if (Array.isArray(data.authors) && data.authors.length > 0 && data.authors[0].key) {
       try {
-        const res = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
-        if (!res.ok) {
-          bookMsg.textContent = "Livre non trouvé dans OpenLibrary.";
-          bookMsg.className = "msg err";
-          return;
+        const aRes = await fetch(
+          "https://api.allorigins.win/raw?url=" +
+          encodeURIComponent(`https://openlibrary.org${data.authors[0].key}.json`)
+        );
+        if (aRes.ok) {
+          const aData = await aRes.json();
+          authorInput.value = aData.name || "";
         }
-        const data = await res.json();
-        titleInput.value = data.title || "";
-
-        // Année de sortie
-        let yearPublished = "";
-        if (data.publish_date) {
-          const parts = data.publish_date.split(" ");
-          for (const part of parts) {
-            if (/^\d{4}$/.test(part)) {
-              yearPublished = part;
-              break;
-            }
-          }
-        }
-        yearPublishedInput.value = yearPublished;
-
-        // Éditeur
-        if (Array.isArray(data.publishers) && data.publishers.length > 0) {
-          if (typeof data.publishers[0] === "string") {
-            publisherInput.value = data.publishers[0];
-          } else if (typeof data.publishers[0] === "object") {
-            publisherInput.value = data.publishers[0].name || "";
-          }
-        }
-
-        // Auteur (appel supplémentaire)
-        authorInput.value = "";
-        if (Array.isArray(data.authors) && data.authors.length > 0 && data.authors[0].key) {
-          try {
-            const aRes = await fetch(`https://openlibrary.org${data.authors[0].key}.json`);
-            if (aRes.ok) {
-              const aData = await aRes.json();
-              authorInput.value = aData.name || "";
-            }
-          } catch (e) {
-            // ignore
-          }
-        }
-
-        bookMsg.textContent = "Infos récupérées, tu peux corriger si besoin.";
-        bookMsg.className = "msg ok";
       } catch (e) {
-        bookMsg.textContent = "Erreur lors de l'appel OpenLibrary.";
-        bookMsg.className = "msg err";
+        // on ignore, ce n'est pas bloquant
+        console.error("Erreur auteur OpenLibrary", e);
       }
-    });
+    }
+
+    bookMsg.textContent = "Infos récupérées, tu peux corriger si besoin.";
+    bookMsg.className = "msg ok";
+
+  } catch (e) {
+    console.error("Erreur OpenLibrary:", e);
+    bookMsg.textContent = "Erreur lors de l'appel OpenLibrary : " + e;
+    bookMsg.className = "msg err";
+  }
+});
 
     // --- Enregistrer un livre ---
     document.getElementById("btn-save").addEventListener("click", async () => {
