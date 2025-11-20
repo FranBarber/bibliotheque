@@ -1,0 +1,660 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Helvetica; -webkit-text-stroke: #000000}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 16.0px 'Apple Color Emoji'; font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="fr"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;meta charset="UTF-8" /&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;title&gt;Bibliothèque familiale&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;style&gt;</span></p>
+<p class="p1"><span class="s1">    body {</span></p>
+<p class="p1"><span class="s1">      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;</span></p>
+<p class="p1"><span class="s1">      margin: 0;</span></p>
+<p class="p1"><span class="s1">      padding: 0;</span></p>
+<p class="p1"><span class="s1">      background: #f5f5f5;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    header {</span></p>
+<p class="p1"><span class="s1">      background: #1f2933;</span></p>
+<p class="p1"><span class="s1">      color: white;</span></p>
+<p class="p1"><span class="s1">      padding: 1rem;</span></p>
+<p class="p1"><span class="s1">      text-align: center;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    main {</span></p>
+<p class="p1"><span class="s1">      max-width: 900px;</span></p>
+<p class="p1"><span class="s1">      margin: 1rem auto 3rem;</span></p>
+<p class="p1"><span class="s1">      background: white;</span></p>
+<p class="p1"><span class="s1">      padding: 1rem 1.5rem 2rem;</span></p>
+<p class="p1"><span class="s1">      border-radius: 12px;</span></p>
+<p class="p1"><span class="s1">      box-shadow: 0 2px 8px rgba(0,0,0,0.08);</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    h1 {</span></p>
+<p class="p1"><span class="s1">      margin: 0;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    h2 {</span></p>
+<p class="p1"><span class="s1">      margin-top: 1.5rem;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    h3 {</span></p>
+<p class="p1"><span class="s1">      margin-top: 1rem;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    .row { display: flex; gap: 1rem; flex-wrap: wrap; }</span></p>
+<p class="p1"><span class="s1">    .col { flex: 1 1 250px; }</span></p>
+<p class="p1"><span class="s1">    label { font-size: 0.9rem; font-weight: 500; display: block; margin-bottom: 0.2rem; }</span></p>
+<p class="p1"><span class="s1">    input, textarea, select {</span></p>
+<p class="p1"><span class="s1">      width: 100%;</span></p>
+<p class="p1"><span class="s1">      padding: 0.4rem 0.6rem;</span></p>
+<p class="p1"><span class="s1">      border-radius: 6px;</span></p>
+<p class="p1"><span class="s1">      border: 1px solid #ccc;</span></p>
+<p class="p1"><span class="s1">      box-sizing: border-box;</span></p>
+<p class="p1"><span class="s1">      font-size: 0.9rem;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    textarea { resize: vertical; min-height: 60px; }</span></p>
+<p class="p1"><span class="s1">    button {</span></p>
+<p class="p1"><span class="s1">      padding: 0.5rem 1rem;</span></p>
+<p class="p1"><span class="s1">      border-radius: 6px;</span></p>
+<p class="p1"><span class="s1">      border: none;</span></p>
+<p class="p1"><span class="s1">      cursor: pointer;</span></p>
+<p class="p1"><span class="s1">      font-size: 0.9rem;</span></p>
+<p class="p1"><span class="s1">      margin-top: 0.3rem;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    button.primary { background: #2563eb; color: white; }</span></p>
+<p class="p1"><span class="s1">    button.secondary { background: #e5e7eb; }</span></p>
+<p class="p1"><span class="s1">    button.danger { background: #ef4444; color: white; }</span></p>
+<p class="p1"><span class="s1">    table {</span></p>
+<p class="p1"><span class="s1">      width: 100%;</span></p>
+<p class="p1"><span class="s1">      border-collapse: collapse;</span></p>
+<p class="p1"><span class="s1">      margin-top: 0.5rem;</span></p>
+<p class="p1"><span class="s1">      font-size: 0.85rem;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    th, td {</span></p>
+<p class="p1"><span class="s1">      padding: 0.4rem 0.5rem;</span></p>
+<p class="p1"><span class="s1">      border-bottom: 1px solid #e5e7eb;</span></p>
+<p class="p1"><span class="s1">      vertical-align: top;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    th { text-align: left; background: #f9fafb; }</span></p>
+<p class="p1"><span class="s1">    .msg { margin-top: 0.3rem; font-size: 0.85rem; }</span></p>
+<p class="p1"><span class="s1">    .msg.ok { color: #16a34a; }</span></p>
+<p class="p1"><span class="s1">    .msg.err { color: #b91c1c; }</span></p>
+<p class="p1"><span class="s1">    .badge-user {</span></p>
+<p class="p1"><span class="s1">      background: #4b5563;</span></p>
+<p class="p1"><span class="s1">      padding: 0.2rem 0.5rem;</span></p>
+<p class="p1"><span class="s1">      border-radius: 999px;</span></p>
+<p class="p1"><span class="s1">      font-size: 0.8rem;</span></p>
+<p class="p1"><span class="s1">      display: inline-block;</span></p>
+<p class="p1"><span class="s1">      margin-top: 0.3rem;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">    #user-info {</span></p>
+<p class="p1"><span class="s1">      margin-top: 0.3rem;</span></p>
+<p class="p1"><span class="s1">      font-size: 0.85rem;</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1">  &lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;header&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;h1&gt;</span><span class="s2">📚</span><span class="s1"> Bibliothèque familiale&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;div id="user-info"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;/header&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">  &lt;main&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;!-- Auth --&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;section id="auth-section"&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;h2&gt;Connexion / Inscription&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;div class="row"&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Email&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="email" id="auth-email" placeholder="vous@example.com" /&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Mot de passe&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="password" id="auth-password" placeholder="••••••••" /&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;button class="primary" id="btn-login"&gt;Se connecter&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;button class="secondary" id="btn-signup"&gt;Créer un compte&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;div class="msg" id="auth-msg"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;/section&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    &lt;section id="app-section" style="display:none;"&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;div style="display:flex; justify-content:space-between; align-items:center;"&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;h2&gt;Ajouter un livre&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;button class="danger" id="btn-logout"&gt;Se déconnecter&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      &lt;div class="row"&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;ISBN (scanner ou taper)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="text" id="isbn" placeholder="9782070368228" /&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;button class="secondary" id="btn-fetch"&gt;</span><span class="s2">🔎</span><span class="s1"> Récupérer infos du livre&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;div class="msg" id="book-msg"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      &lt;div class="row"&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Titre&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="text" id="title" /&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Auteur&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="text" id="author" /&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      &lt;div class="row"&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Éditeur&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="text" id="publisher" /&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Année de sortie&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="text" id="year-published" placeholder="ex: 2005" /&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      &lt;h3&gt;Informations de lecture&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;div class="row"&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Année de lecture&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="text" id="year-read" placeholder="ex: 2024" /&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Note /20&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;input type="text" id="rating" placeholder="ex: 15.5" /&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;div class="col"&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;label&gt;Statut&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;select id="status"&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;option value="à lire"&gt;À lire&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;option value="en cours"&gt;En cours&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;option value="lu" selected&gt;Lu&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;/select&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;div&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;label&gt;Commentaires&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;textarea id="comment" placeholder="Ton avis, ce que tu as aimé / pas aimé…"&gt;&lt;/textarea&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      &lt;button class="primary" id="btn-save"&gt;</span><span class="s2">💾</span><span class="s1"> Enregistrer le livre&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;div class="msg" id="save-msg"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      &lt;h2&gt;Mes livres&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;button class="secondary" id="btn-refresh"&gt;</span><span class="s2">🔄</span><span class="s1"> Rafraîchir la liste&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;button class="secondary" id="btn-export"&gt;</span><span class="s2">⬇️</span><span class="s1"> Exporter en CSV&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;table id="books-table"&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;thead&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;tr&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Titre&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Auteur&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Infos&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Statut / lecture&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Note&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Commentaires&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;/tr&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/thead&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;tbody&gt;&lt;/tbody&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/table&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      &lt;h2&gt;Top livres de la famille&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;button class="secondary" id="btn-family-top"&gt;</span><span class="s2">🏆</span><span class="s1"> Voir le classement&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;table id="family-table"&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;thead&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;tr&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Titre&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Auteur&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Nombre de notes&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;th&gt;Note moyenne&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;/tr&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;/thead&gt;</span></p>
+<p class="p1"><span class="s1">        &lt;tbody&gt;&lt;/tbody&gt;</span></p>
+<p class="p1"><span class="s1">      &lt;/table&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;/section&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;/main&gt;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">  &lt;script type="module"&gt;</span></p>
+<p class="p1"><span class="s1">  </span></p>
+<p class="p1"><span class="s1">    const SUPABASE_URL = "https://jjiywxidulgiythucivk.supabase.co";</span></p>
+<p class="p1"><span class="s1">    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqaXl3eGlkdWxnaXl0aHVjaXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MzkwNjAsImV4cCI6MjA3OTIxNTA2MH0.N-ion8iRnXyyqPJTJ5Y2hSC1NF8IEM0HaAml6W3O-nk";</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Références DOM ---</span></p>
+<p class="p1"><span class="s1">    const authSection = document.getElementById("auth-section");</span></p>
+<p class="p1"><span class="s1">    const appSection = document.getElementById("app-section");</span></p>
+<p class="p1"><span class="s1">    const userInfo = document.getElementById("user-info");</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    const authEmail = document.getElementById("auth-email");</span></p>
+<p class="p1"><span class="s1">    const authPassword = document.getElementById("auth-password");</span></p>
+<p class="p1"><span class="s1">    const authMsg = document.getElementById("auth-msg");</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    const isbnInput = document.getElementById("isbn");</span></p>
+<p class="p1"><span class="s1">    const titleInput = document.getElementById("title");</span></p>
+<p class="p1"><span class="s1">    const authorInput = document.getElementById("author");</span></p>
+<p class="p1"><span class="s1">    const publisherInput = document.getElementById("publisher");</span></p>
+<p class="p1"><span class="s1">    const yearPublishedInput = document.getElementById("year-published");</span></p>
+<p class="p1"><span class="s1">    const yearReadInput = document.getElementById("year-read");</span></p>
+<p class="p1"><span class="s1">    const ratingInput = document.getElementById("rating");</span></p>
+<p class="p1"><span class="s1">    const statusInput = document.getElementById("status");</span></p>
+<p class="p1"><span class="s1">    const commentInput = document.getElementById("comment");</span></p>
+<p class="p1"><span class="s1">    const bookMsg = document.getElementById("book-msg");</span></p>
+<p class="p1"><span class="s1">    const saveMsg = document.getElementById("save-msg");</span></p>
+<p class="p1"><span class="s1">    const booksTableBody = document.querySelector("#books-table tbody");</span></p>
+<p class="p1"><span class="s1">    const familyTableBody = document.querySelector("#family-table tbody");</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    let currentUser = null;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Affichage auth / appli ---</span></p>
+<p class="p1"><span class="s1">    async function checkSession() {</span></p>
+<p class="p1"><span class="s1">      const { data } = await supabase.auth.getSession();</span></p>
+<p class="p1"><span class="s1">      if (data.session &amp;&amp; data.session.user) {</span></p>
+<p class="p1"><span class="s1">        currentUser = data.session.user;</span></p>
+<p class="p1"><span class="s1">        showApp();</span></p>
+<p class="p1"><span class="s1">      } else {</span></p>
+<p class="p1"><span class="s1">        showAuth();</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    function showAuth() {</span></p>
+<p class="p1"><span class="s1">      authSection.style.display = "block";</span></p>
+<p class="p1"><span class="s1">      appSection.style.display = "none";</span></p>
+<p class="p1"><span class="s1">      userInfo.innerHTML = "";</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    function showApp() {</span></p>
+<p class="p1"><span class="s1">      authSection.style.display = "none";</span></p>
+<p class="p1"><span class="s1">      appSection.style.display = "block";</span></p>
+<p class="p1"><span class="s1">      userInfo.innerHTML = `&lt;span class="badge-user"&gt;${currentUser.email}&lt;/span&gt;`;</span></p>
+<p class="p1"><span class="s1">      loadBooks();</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Auth ---</span></p>
+<p class="p1"><span class="s1">    document.getElementById("btn-login").addEventListener("click", async () =&gt; {</span></p>
+<p class="p1"><span class="s1">      authMsg.textContent = "";</span></p>
+<p class="p1"><span class="s1">      authMsg.className = "msg";</span></p>
+<p class="p1"><span class="s1">      const email = authEmail.value.trim();</span></p>
+<p class="p1"><span class="s1">      const password = authPassword.value.trim();</span></p>
+<p class="p1"><span class="s1">      if (!email || !password) {</span></p>
+<p class="p1"><span class="s1">        authMsg.textContent = "Email et mot de passe obligatoires.";</span></p>
+<p class="p1"><span class="s1">        authMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">      const { data, error } = await supabase.auth.signInWithPassword({ email, password });</span></p>
+<p class="p1"><span class="s1">      if (error) {</span></p>
+<p class="p1"><span class="s1">        authMsg.textContent = "Erreur de connexion : " + error.message;</span></p>
+<p class="p1"><span class="s1">        authMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">      } else {</span></p>
+<p class="p1"><span class="s1">        currentUser = data.user;</span></p>
+<p class="p1"><span class="s1">        authMsg.textContent = "";</span></p>
+<p class="p1"><span class="s1">        showApp();</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">    });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    document.getElementById("btn-signup").addEventListener("click", async () =&gt; {</span></p>
+<p class="p1"><span class="s1">      authMsg.textContent = "";</span></p>
+<p class="p1"><span class="s1">      authMsg.className = "msg";</span></p>
+<p class="p1"><span class="s1">      const email = authEmail.value.trim();</span></p>
+<p class="p1"><span class="s1">      const password = authPassword.value.trim();</span></p>
+<p class="p1"><span class="s1">      if (!email || !password) {</span></p>
+<p class="p1"><span class="s1">        authMsg.textContent = "Email et mot de passe obligatoires.";</span></p>
+<p class="p1"><span class="s1">        authMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">      const { data, error } = await supabase.auth.signUp({ email, password });</span></p>
+<p class="p1"><span class="s1">      if (error) {</span></p>
+<p class="p1"><span class="s1">        authMsg.textContent = "Erreur d'inscription : " + error.message;</span></p>
+<p class="p1"><span class="s1">        authMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">      } else {</span></p>
+<p class="p1"><span class="s1">        authMsg.textContent = "Compte créé, vérifie ton e-mail si nécessaire, puis connecte-toi.";</span></p>
+<p class="p1"><span class="s1">        authMsg.className = "msg ok";</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">    });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    document.getElementById("btn-logout").addEventListener("click", async () =&gt; {</span></p>
+<p class="p1"><span class="s1">      await supabase.auth.signOut();</span></p>
+<p class="p1"><span class="s1">      currentUser = null;</span></p>
+<p class="p1"><span class="s1">      showAuth();</span></p>
+<p class="p1"><span class="s1">    });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Récupération infos livre depuis OpenLibrary ---</span></p>
+<p class="p1"><span class="s1">    document.getElementById("btn-fetch").addEventListener("click", async () =&gt; {</span></p>
+<p class="p1"><span class="s1">      const isbn = isbnInput.value.trim();</span></p>
+<p class="p1"><span class="s1">      bookMsg.textContent = "";</span></p>
+<p class="p1"><span class="s1">      bookMsg.className = "msg";</span></p>
+<p class="p1"><span class="s1">      if (!isbn) {</span></p>
+<p class="p1"><span class="s1">        bookMsg.textContent = "ISBN vide.";</span></p>
+<p class="p1"><span class="s1">        bookMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">      try {</span></p>
+<p class="p1"><span class="s1">        const res = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);</span></p>
+<p class="p1"><span class="s1">        if (!res.ok) {</span></p>
+<p class="p1"><span class="s1">          bookMsg.textContent = "Livre non trouvé dans OpenLibrary.";</span></p>
+<p class="p1"><span class="s1">          bookMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">          return;</span></p>
+<p class="p1"><span class="s1">        }</span></p>
+<p class="p1"><span class="s1">        const data = await res.json();</span></p>
+<p class="p1"><span class="s1">        titleInput.value = data.title || "";</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">        // Année de sortie</span></p>
+<p class="p1"><span class="s1">        let yearPublished = "";</span></p>
+<p class="p1"><span class="s1">        if (data.publish_date) {</span></p>
+<p class="p1"><span class="s1">          const parts = data.publish_date.split(" ");</span></p>
+<p class="p1"><span class="s1">          for (const part of parts) {</span></p>
+<p class="p1"><span class="s1">            if (/^\d{4}$/.test(part)) {</span></p>
+<p class="p1"><span class="s1">              yearPublished = part;</span></p>
+<p class="p1"><span class="s1">              break;</span></p>
+<p class="p1"><span class="s1">            }</span></p>
+<p class="p1"><span class="s1">          }</span></p>
+<p class="p1"><span class="s1">        }</span></p>
+<p class="p1"><span class="s1">        yearPublishedInput.value = yearPublished;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">        // Éditeur</span></p>
+<p class="p1"><span class="s1">        if (Array.isArray(data.publishers) &amp;&amp; data.publishers.length &gt; 0) {</span></p>
+<p class="p1"><span class="s1">          if (typeof data.publishers[0] === "string") {</span></p>
+<p class="p1"><span class="s1">            publisherInput.value = data.publishers[0];</span></p>
+<p class="p1"><span class="s1">          } else if (typeof data.publishers[0] === "object") {</span></p>
+<p class="p1"><span class="s1">            publisherInput.value = data.publishers[0].name || "";</span></p>
+<p class="p1"><span class="s1">          }</span></p>
+<p class="p1"><span class="s1">        }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">        // Auteur (appel supplémentaire)</span></p>
+<p class="p1"><span class="s1">        authorInput.value = "";</span></p>
+<p class="p1"><span class="s1">        if (Array.isArray(data.authors) &amp;&amp; data.authors.length &gt; 0 &amp;&amp; data.authors[0].key) {</span></p>
+<p class="p1"><span class="s1">          try {</span></p>
+<p class="p1"><span class="s1">            const aRes = await fetch(`https://openlibrary.org${data.authors[0].key}.json`);</span></p>
+<p class="p1"><span class="s1">            if (aRes.ok) {</span></p>
+<p class="p1"><span class="s1">              const aData = await aRes.json();</span></p>
+<p class="p1"><span class="s1">              authorInput.value = aData.name || "";</span></p>
+<p class="p1"><span class="s1">            }</span></p>
+<p class="p1"><span class="s1">          } catch (e) {</span></p>
+<p class="p1"><span class="s1">            // on ignore</span></p>
+<p class="p1"><span class="s1">          }</span></p>
+<p class="p1"><span class="s1">        }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">        bookMsg.textContent = "Infos récupérées, tu peux corriger si besoin.";</span></p>
+<p class="p1"><span class="s1">        bookMsg.className = "msg ok";</span></p>
+<p class="p1"><span class="s1">      } catch (e) {</span></p>
+<p class="p1"><span class="s1">        bookMsg.textContent = "Erreur lors de l'appel OpenLibrary.";</span></p>
+<p class="p1"><span class="s1">        bookMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">    });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Enregistrer un livre ---</span></p>
+<p class="p1"><span class="s1">    document.getElementById("btn-save").addEventListener("click", async () =&gt; {</span></p>
+<p class="p1"><span class="s1">      saveMsg.textContent = "";</span></p>
+<p class="p1"><span class="s1">      saveMsg.className = "msg";</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      if (!currentUser) {</span></p>
+<p class="p1"><span class="s1">        saveMsg.textContent = "Tu dois être connecté.";</span></p>
+<p class="p1"><span class="s1">        saveMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const isbn = isbnInput.value.trim();</span></p>
+<p class="p1"><span class="s1">      const title = titleInput.value.trim() || "Titre inconnu";</span></p>
+<p class="p1"><span class="s1">      const author = authorInput.value.trim() || "Auteur inconnu";</span></p>
+<p class="p1"><span class="s1">      const publisher = publisherInput.value.trim() || "Éditeur inconnu";</span></p>
+<p class="p1"><span class="s1">      const year_published = yearPublishedInput.value.trim() || "Année inconnue";</span></p>
+<p class="p1"><span class="s1">      const year_read = yearReadInput.value.trim() || "Inconnue";</span></p>
+<p class="p1"><span class="s1">      const ratingRaw = ratingInput.value.trim();</span></p>
+<p class="p1"><span class="s1">      const status = statusInput.value || "lu";</span></p>
+<p class="p1"><span class="s1">      const comment = commentInput.value.trim();</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      if (!isbn) {</span></p>
+<p class="p1"><span class="s1">        saveMsg.textContent = "ISBN obligatoire.";</span></p>
+<p class="p1"><span class="s1">        saveMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      let rating = null;</span></p>
+<p class="p1"><span class="s1">      if (ratingRaw) {</span></p>
+<p class="p1"><span class="s1">        const parsed = parseFloat(ratingRaw.replace(",", "."));</span></p>
+<p class="p1"><span class="s1">        if (!isNaN(parsed)) rating = parsed;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      // Vérifie si un livre avec cet ISBN existe déjà pour cet utilisateur</span></p>
+<p class="p1"><span class="s1">      const { data: existing, error: selError } = await supabase</span></p>
+<p class="p1"><span class="s1">        .from("books")</span></p>
+<p class="p1"><span class="s1">        .select("*")</span></p>
+<p class="p1"><span class="s1">        .eq("user_id", currentUser.id)</span></p>
+<p class="p1"><span class="s1">        .eq("isbn", isbn)</span></p>
+<p class="p1"><span class="s1">        .maybeSingle();</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      if (selError &amp;&amp; selError.code !== "PGRST116") {</span></p>
+<p class="p1"><span class="s1">        saveMsg.textContent = "Erreur de lecture : " + selError.message;</span></p>
+<p class="p1"><span class="s1">        saveMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      if (existing) {</span></p>
+<p class="p1"><span class="s1">        // update</span></p>
+<p class="p1"><span class="s1">        const { error: updError } = await supabase</span></p>
+<p class="p1"><span class="s1">          .from("books")</span></p>
+<p class="p1"><span class="s1">          .update({</span></p>
+<p class="p1"><span class="s1">            title,</span></p>
+<p class="p1"><span class="s1">            author,</span></p>
+<p class="p1"><span class="s1">            publisher,</span></p>
+<p class="p1"><span class="s1">            year_published,</span></p>
+<p class="p1"><span class="s1">            year_read,</span></p>
+<p class="p1"><span class="s1">            rating,</span></p>
+<p class="p1"><span class="s1">            comment,</span></p>
+<p class="p1"><span class="s1">            status</span></p>
+<p class="p1"><span class="s1">          })</span></p>
+<p class="p1"><span class="s1">          .eq("id", existing.id);</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">        if (updError) {</span></p>
+<p class="p1"><span class="s1">          saveMsg.textContent = "Erreur de mise à jour : " + updError.message;</span></p>
+<p class="p1"><span class="s1">          saveMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">          return;</span></p>
+<p class="p1"><span class="s1">        }</span></p>
+<p class="p1"><span class="s1">        saveMsg.textContent = "Livre mis à jour.";</span></p>
+<p class="p1"><span class="s1">        saveMsg.className = "msg ok";</span></p>
+<p class="p1"><span class="s1">      } else {</span></p>
+<p class="p1"><span class="s1">        // insert</span></p>
+<p class="p1"><span class="s1">        const { error: insError } = await supabase</span></p>
+<p class="p1"><span class="s1">          .from("books")</span></p>
+<p class="p1"><span class="s1">          .insert({</span></p>
+<p class="p1"><span class="s1">            user_id: currentUser.id,</span></p>
+<p class="p1"><span class="s1">            isbn,</span></p>
+<p class="p1"><span class="s1">            title,</span></p>
+<p class="p1"><span class="s1">            author,</span></p>
+<p class="p1"><span class="s1">            publisher,</span></p>
+<p class="p1"><span class="s1">            year_published,</span></p>
+<p class="p1"><span class="s1">            year_read,</span></p>
+<p class="p1"><span class="s1">            rating,</span></p>
+<p class="p1"><span class="s1">            comment,</span></p>
+<p class="p1"><span class="s1">            status</span></p>
+<p class="p1"><span class="s1">          });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">        if (insError) {</span></p>
+<p class="p1"><span class="s1">          saveMsg.textContent = "Erreur d'enregistrement : " + insError.message;</span></p>
+<p class="p1"><span class="s1">          saveMsg.className = "msg err";</span></p>
+<p class="p1"><span class="s1">          return;</span></p>
+<p class="p1"><span class="s1">        }</span></p>
+<p class="p1"><span class="s1">        saveMsg.textContent = "Livre enregistré.";</span></p>
+<p class="p1"><span class="s1">        saveMsg.className = "msg ok";</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      await loadBooks();</span></p>
+<p class="p1"><span class="s1">    });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Charger les livres de l'utilisateur ---</span></p>
+<p class="p1"><span class="s1">    async function loadBooks() {</span></p>
+<p class="p1"><span class="s1">      booksTableBody.innerHTML = "";</span></p>
+<p class="p1"><span class="s1">      if (!currentUser) return;</span></p>
+<p class="p1"><span class="s1">      const { data, error } = await supabase</span></p>
+<p class="p1"><span class="s1">        .from("books")</span></p>
+<p class="p1"><span class="s1">        .select("*")</span></p>
+<p class="p1"><span class="s1">        .eq("user_id", currentUser.id)</span></p>
+<p class="p1"><span class="s1">        .order("created_at", { ascending: false });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      if (error) {</span></p>
+<p class="p1"><span class="s1">        console.error(error);</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">      for (const book of data) {</span></p>
+<p class="p1"><span class="s1">        const tr = document.createElement("tr");</span></p>
+<p class="p1"><span class="s1">        tr.innerHTML = `</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;${book.title || ""}&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;${book.author || ""}&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;div&gt;ISBN : ${book.isbn || ""}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;div&gt;Éditeur : ${book.publisher || ""}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;div&gt;Sortie : ${book.year_published || ""}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;div&gt;${book.status || ""}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">            &lt;div&gt;Année : ${book.year_read || ""}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;${book.rating ?? ""}&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;${(book.comment || "").replace(/\n/g, "&lt;br&gt;")}&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">        `;</span></p>
+<p class="p1"><span class="s1">        booksTableBody.appendChild(tr);</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    document.getElementById("btn-refresh").addEventListener("click", loadBooks);</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Export CSV (livres de l'utilisateur) ---</span></p>
+<p class="p1"><span class="s1">    document.getElementById("btn-export").addEventListener("click", async () =&gt; {</span></p>
+<p class="p1"><span class="s1">      if (!currentUser) return;</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const { data, error } = await supabase</span></p>
+<p class="p1"><span class="s1">        .from("books")</span></p>
+<p class="p1"><span class="s1">        .select("*")</span></p>
+<p class="p1"><span class="s1">        .eq("user_id", currentUser.id);</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      if (error) {</span></p>
+<p class="p1"><span class="s1">        alert("Erreur lors de l'export : " + error.message);</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      if (!data || data.length === 0) {</span></p>
+<p class="p1"><span class="s1">        alert("Aucun livre à exporter.");</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const headers = [</span></p>
+<p class="p1"><span class="s1">        "isbn","title","author","publisher",</span></p>
+<p class="p1"><span class="s1">        "year_published","year_read","status","rating","comment"</span></p>
+<p class="p1"><span class="s1">      ];</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const rows = [headers.join(";")];</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      for (const book of data) {</span></p>
+<p class="p1"><span class="s1">        const row = [</span></p>
+<p class="p1"><span class="s1">          book.isbn || "",</span></p>
+<p class="p1"><span class="s1">          book.title || "",</span></p>
+<p class="p1"><span class="s1">          book.author || "",</span></p>
+<p class="p1"><span class="s1">          book.publisher || "",</span></p>
+<p class="p1"><span class="s1">          book.year_published || "",</span></p>
+<p class="p1"><span class="s1">          book.year_read || "",</span></p>
+<p class="p1"><span class="s1">          book.status || "",</span></p>
+<p class="p1"><span class="s1">          book.rating ?? "",</span></p>
+<p class="p1"><span class="s1">          (book.comment || "").replace(/\r?\n/g, " ")</span></p>
+<p class="p1"><span class="s1">        ].map(v =&gt; `"${String(v).replace(/"/g, '""')}"`).join(";");</span></p>
+<p class="p1"><span class="s1">        rows.push(row);</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const csvContent = rows.join("\n");</span></p>
+<p class="p1"><span class="s1">      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });</span></p>
+<p class="p1"><span class="s1">      const url = URL.createObjectURL(blob);</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const a = document.createElement("a");</span></p>
+<p class="p1"><span class="s1">      a.href = url;</span></p>
+<p class="p1"><span class="s1">      a.download = "mes_livres.csv";</span></p>
+<p class="p1"><span class="s1">      document.body.appendChild(a);</span></p>
+<p class="p1"><span class="s1">      a.click();</span></p>
+<p class="p1"><span class="s1">      document.body.removeChild(a);</span></p>
+<p class="p1"><span class="s1">      URL.revokeObjectURL(url);</span></p>
+<p class="p1"><span class="s1">    });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Top livres de la famille ---</span></p>
+<p class="p1"><span class="s1">    async function loadFamilyTopBooks() {</span></p>
+<p class="p1"><span class="s1">      familyTableBody.innerHTML = "";</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      // RLS côté Supabase doit autoriser SELECT pour tous les users authentifiés</span></p>
+<p class="p1"><span class="s1">      const { data, error } = await supabase</span></p>
+<p class="p1"><span class="s1">        .from("books")</span></p>
+<p class="p1"><span class="s1">        .select("title, author, rating")</span></p>
+<p class="p1"><span class="s1">        .not("rating", "is", null);</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      if (error) {</span></p>
+<p class="p1"><span class="s1">        console.error(error);</span></p>
+<p class="p1"><span class="s1">        return;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const map = new Map();</span></p>
+<p class="p1"><span class="s1">      for (const b of data) {</span></p>
+<p class="p1"><span class="s1">        const key = `${b.title || ""}|||${b.author || ""}`;</span></p>
+<p class="p1"><span class="s1">        if (!map.has(key)) {</span></p>
+<p class="p1"><span class="s1">          map.set(key, { title: b.title || "", author: b.author || "", sum: 0, count: 0 });</span></p>
+<p class="p1"><span class="s1">        }</span></p>
+<p class="p1"><span class="s1">        const item = map.get(key);</span></p>
+<p class="p1"><span class="s1">        item.sum += Number(b.rating) || 0;</span></p>
+<p class="p1"><span class="s1">        item.count += 1;</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const list = [];</span></p>
+<p class="p1"><span class="s1">      for (const item of map.values()) {</span></p>
+<p class="p1"><span class="s1">        list.push({</span></p>
+<p class="p1"><span class="s1">          title: item.title,</span></p>
+<p class="p1"><span class="s1">          author: item.author,</span></p>
+<p class="p1"><span class="s1">          count: item.count,</span></p>
+<p class="p1"><span class="s1">          avg: item.sum / item.count</span></p>
+<p class="p1"><span class="s1">        });</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      list.sort((a, b) =&gt; {</span></p>
+<p class="p1"><span class="s1">        if (b.avg !== a.avg) return b.avg - a.avg;</span></p>
+<p class="p1"><span class="s1">        return b.count - a.count;</span></p>
+<p class="p1"><span class="s1">      });</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      const top = list.slice(0, 20);</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">      for (const book of top) {</span></p>
+<p class="p1"><span class="s1">        const tr = document.createElement("tr");</span></p>
+<p class="p1"><span class="s1">        tr.innerHTML = `</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;${book.title}&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;${book.author}&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;${book.count}&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">          &lt;td&gt;${book.avg.toFixed(2)}&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1">        `;</span></p>
+<p class="p1"><span class="s1">        familyTableBody.appendChild(tr);</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">    }</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    document.getElementById("btn-family-top").addEventListener("click", loadFamilyTopBooks);</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // --- Au chargement de la page ---</span></p>
+<p class="p1"><span class="s1">    checkSession();</span></p>
+<p class="p1"><span class="s1"> </span></p>
+<p class="p1"><span class="s1">    // Sur changement de session (autre onglet)</span></p>
+<p class="p1"><span class="s1">    supabase.auth.onAuthStateChange((_event, session) =&gt; {</span></p>
+<p class="p1"><span class="s1">      if (session &amp;&amp; session.user) {</span></p>
+<p class="p1"><span class="s1">        currentUser = session.user;</span></p>
+<p class="p1"><span class="s1">        showApp();</span></p>
+<p class="p1"><span class="s1">      } else {</span></p>
+<p class="p1"><span class="s1">        currentUser = null;</span></p>
+<p class="p1"><span class="s1">        showAuth();</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p1"><span class="s1">    });</span></p>
+<p class="p1"><span class="s1">  &lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
